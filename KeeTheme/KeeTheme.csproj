@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KeeTheme</RootNamespace>
     <AssemblyName>KeeTheme</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -34,9 +34,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KeePass, Version=2.42.1.23464, Culture=neutral, PublicKeyToken=fed2ed7716aecf5c, processorArchitecture=MSIL">
+    <Reference Include="KeePass, Version=2.39.0.16946, Culture=neutral, PublicKeyToken=fed2ed7716aecf5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\KeePass Password Safe 2\KeePass.exe</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Pleasant Solutions\KeePass for Pleasant Password Server\KeePass.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,7 +62,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Decorators\RichTextBoxNativeWindow.cs" />
-    <Compile Include="Decorators\SplitButtonExDecorator.cs" />
+    <Compile Include="Decorators\SplitButtonExDecorator.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Options\KeeThemeOptions.cs" />
     <Compile Include="Theme\ButtonLook.cs" />
     <Compile Include="Theme\CheckBoxButtonLook.cs" />
@@ -114,6 +116,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y $(TargetPath) $(SolutionDir)\..\KeePass\Plugins</PostBuildEvent>
+    <PostBuildEvent>copy /Y $(TargetPath) $(SolutionDir)build\</PostBuildEvent>
   </PropertyGroup>
 </Project>

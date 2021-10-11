@@ -80,21 +80,21 @@ namespace KeeTheme
 			}; 
 		}
 
-		public override ToolStripMenuItem GetMenuItem(PluginMenuType t)
-		{
-			if (t == PluginMenuType.Main)
-			{
-				_menuItem = new ToolStripMenuItem(_theme.Name);
-				_menuItem.CheckOnClick = true;
-				_menuItem.Checked = _options.Enabled;
-				_menuItem.ShortcutKeys = _options.HotKey;
-				_menuItem.Click += HandleToggleKeeThemeMenuItemClick;
-				_options.HotKeyChanged += keys => _menuItem.ShortcutKeys = keys;
-				return _menuItem;
-			}
+		//public override ToolStripMenuItem GetMenuItem(PluginMenuType t)
+		//{
+		//	if (t == PluginMenuType.Main)
+		//	{
+		//		_menuItem = new ToolStripMenuItem(_theme.Name);
+		//		_menuItem.CheckOnClick = true;
+		//		_menuItem.Checked = _options.Enabled;
+		//		_menuItem.ShortcutKeys = _options.HotKey;
+		//		_menuItem.Click += HandleToggleKeeThemeMenuItemClick;
+		//		_options.HotKeyChanged += keys => _menuItem.ShortcutKeys = keys;
+		//		return _menuItem;
+		//	}
 
-			return base.GetMenuItem(t);
-		}
+		//	return base.GetMenuItem(t);
+		//}
 
 		private void HandleToggleKeeThemeMenuItemClick(object sender, EventArgs eventArgs)
 		{

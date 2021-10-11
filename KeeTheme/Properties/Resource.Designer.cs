@@ -19,7 +19,7 @@ namespace KeeTheme.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -66,7 +66,7 @@ namespace KeeTheme.Properties {
         ///
         ///[Palette]
         ///Control = (51, 51, 51)
-        ///ControlText = (167, 168, 167)
+        ///ControlText = (227, 227, 227)
         ///Window = (69, 73, 74)
         ///LightWindow = (74, 78, 79)
         ///WindowText = (220, 220, 220)
@@ -74,16 +74,14 @@ namespace KeeTheme.Properties {
         ///LightBorder = (81, 81, 81)
         ///Header = (57, 60, 62)
         ///ColumnBorder = (97, 100, 101)
-        ///Group = (104, 151, 187)
+        ///Group = (148, 184, 220)
         ///GroupHighlight = (65, 82, 96)
-        ///Link = (0, 102, 204)
+        ///Link = (110, 179, 248)
         ///ToolStrip = (64, 64, 64)
         ///ToolStripHighlight = (114, 161, 197)
         ///ToolStripBorder = (0, 0, 0)
-        ///
-        ///[Other]
-        ///ControlNormalColor = Window
-        ///ControlDisabled [rest of string was truncated]&quot;;.
+        ///Error = (207, 102, 121)
+        ///TreeViewHighlight = (55, 86, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DarkTheme {
             get {
