@@ -19,7 +19,7 @@ namespace KeeTheme.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -86,6 +86,35 @@ namespace KeeTheme.Properties {
         internal static string DarkTheme {
             get {
                 return ResourceManager.GetString("DarkTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [KeeTheme]
+        ///Name=Dark Theme Win11
+        ///
+        ///[Palette]
+        ///Control = (25, 25, 25)
+        ///ControlText = (255, 255, 255)
+        ///Window = (25, 25, 25)
+        ///LightWindow = (33, 33, 33)
+        ///WindowText = (255, 255, 255)
+        ///Border = (43, 43, 43)
+        ///LightBorder = (53, 53, 53)
+        ///Header = (25, 25, 25)
+        ///ColumnBorder = (59, 59, 59)
+        ///Group = (255, 255, 255)
+        ///GroupHighlight = (77, 77, 77)
+        ///Link = (67, 172, 226)
+        ///ToolStrip = (44, 44, 44)
+        ///ToolStripHighlight = (56, 56, 56)
+        ///ToolStripBorder = (0, 0, 0)
+        ///Error = (227, 36, 27)
+        ///TreeViewHighlight = (77, 77, 77)        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DarkThemeWin11 {
+            get {
+                return ResourceManager.GetString("DarkThemeWin11", resourceCulture);
             }
         }
         

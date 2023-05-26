@@ -1,22 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using KeePass.App;
 using KeePass.UI;
 using KeePassLib.Utility;
 using KeeTheme.Decorators;
+using KeeTheme.Options;
 using KeeTheme.Theme;
 
 namespace KeeTheme
 {
 	internal class KeeTheme
 	{
-		private readonly DefaultTheme _defaultTheme;
+		private readonly KeeThemeOptions _options;
+		private readonly CustomTheme _defaultTheme;
 
 		private ITheme _customTheme;
 		private ITheme _theme;
@@ -33,10 +37,11 @@ namespace KeeTheme
 			get { return _customTheme.Name; }
 		}
 
-		public KeeTheme()
+		public KeeTheme(KeeThemeOptions options)
 		{
-			_defaultTheme = new DefaultTheme();
-			_customTheme = new CustomTheme(IniFile.GetFromFile() ?? IniFile.GetFromResources());
+			_options = options;
+			_defaultTheme = CustomTheme.GetDefaultTheme();
+			_customTheme = GetCustomTheme();
 			_theme = _defaultTheme;
 		}
 
@@ -45,7 +50,7 @@ namespace KeeTheme
 			_enabled = enable;
 
 			if (_enabled)
-				_customTheme = new CustomTheme(IniFile.GetFromFile() ?? IniFile.GetFromResources());
+				_customTheme = GetCustomTheme();
 
 			_theme = _enabled ? _customTheme : _defaultTheme;
 
@@ -54,6 +59,13 @@ namespace KeeTheme
 			KnownColorsDecorator.Apply(_theme, _enabled);
 
 			ApplyOther();
+		}
+
+		private ITheme GetCustomTheme()
+		{
+			var templateFile = TemplateReader.Get(_options.Template) ?? TemplateReader.GetDefaultTemplate();
+			var themeTemplate = new CustomThemeTemplate(templateFile);
+			return new CustomTheme(themeTemplate);
 		}
 
 		private void ApplyOther()
@@ -91,6 +103,9 @@ namespace KeeTheme
 			var form = control as Form;
 			if (form != null) Apply(form);
 
+			var dataGridView = control as DataGridView;
+			if (dataGridView != null) Apply(dataGridView);
+			
 			var button = control as Button;
 			if (button != null) Apply(button);
 
@@ -135,7 +150,10 @@ namespace KeeTheme
 
 			var checkBox = control as CheckBox;
 			if (checkBox != null) Apply(checkBox);
-
+			
+			var propertyGrid = control as PropertyGrid;
+			if (propertyGrid != null) Apply(propertyGrid);
+			
 			OverrideResetBackground(control);
 		}
 
@@ -151,6 +169,13 @@ namespace KeeTheme
 			}
 		}
 
+		private void Apply(DataGridView dataGridView)
+		{
+			dataGridView.BackgroundColor = _theme.Control.BackColor;
+			dataGridView.RowsDefaultCellStyle.BackColor = _theme.Control.BackColor;
+			dataGridView.RowsDefaultCellStyle.ForeColor = _theme.Control.ForeColor;
+		}
+		
 		private void Apply(CheckBox checkBox)
 		{
 			var checkBoxLook = checkBox.Appearance == Appearance.Button
@@ -164,12 +189,56 @@ namespace KeeTheme
 			checkBox.FlatAppearance.CheckedBackColor = checkBoxLook.CheckedBackColor;
 			checkBox.FlatAppearance.MouseDownBackColor = checkBoxLook.MouseDownBackColor;
 			checkBox.FlatAppearance.MouseOverBackColor = checkBoxLook.MouseOverBackColor;
+			
+			checkBox.EnabledChanged -= HandleCheckBoxEnabledChanged;
+			checkBox.EnabledChanged += HandleCheckBoxEnabledChanged;
+		}
+
+		private void HandleCheckBoxEnabledChanged(object sender, EventArgs e)
+		{
+			var checkBox = (CheckBox) sender;
+			if (checkBox.Enabled)
+			{
+				checkBox.Paint -= HandleCheckBoxPaint;
+				checkBox.Invalidate();
+			}
+			else
+			{
+				checkBox.Paint += HandleCheckBoxPaint;
+			}
+		}
+
+		private void HandleCheckBoxPaint(object sender, PaintEventArgs e)
+		{
+			var checkBox = (CheckBox)sender;
+			var disabledForeColor = ControlPaint.Dark(_theme.Button.ForeColor, 0.25f);
+			var glyphSize = CheckBoxRenderer.GetGlyphSize(e.Graphics, CheckBoxState.UncheckedNormal);
+			var flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.SingleLine;
+			var clientRectangle = new Rectangle(glyphSize.Width, -1, 
+				checkBox.ClientRectangle.Size.Width - glyphSize.Width, checkBox.ClientRectangle.Size.Height);
+			
+			TextRenderer.DrawText(e.Graphics, checkBox.Text, checkBox.Font, clientRectangle, disabledForeColor, flags);
 		}
 
 		private void Apply(ComboBox comboBox)
 		{
 			if (comboBox.DropDownStyle == ComboBoxStyle.DropDownList)
 				comboBox.FlatStyle = FlatStyle.Popup;
+
+			comboBox.BackColorChanged -= HandleComboBoxBackColorChanged;
+			comboBox.BackColorChanged += HandleComboBoxBackColorChanged;
+		}
+
+		private void HandleComboBoxBackColorChanged(object sender, EventArgs e)
+		{
+			if (!_enabled)
+			{
+				return;
+			}
+			
+			var comboBox = (ComboBox) sender;
+			if (comboBox.BackColor == SystemColors.Window)
+				comboBox.BackColor = _theme.Control.BackColor;
 		}
 
 		private void Apply(QualityProgressBar qualityProgressBar)
@@ -213,7 +282,7 @@ namespace KeeTheme
 			menuStrip.BackColor = _theme.MenuItem.BackColor;
 			menuStrip.ForeColor = _theme.MenuItem.ForeColor;
 
-			Apply(menuStrip.Items);
+            Apply(menuStrip.Items);
 		}
 
 		private void Apply(ToolStrip toolStrip)
@@ -443,5 +512,10 @@ namespace KeeTheme
 			decorator.EnableTheme(_enabled, _theme);
 		}
 
+		private void Apply(PropertyGrid propertyGrid)
+		{
+			propertyGrid.CategoryForeColor = _theme.PropertyGrid.CategoryForeColor;
+			propertyGrid.LineColor = _theme.PropertyGrid.LineColor;
+		}
 	}
 }
